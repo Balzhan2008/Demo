@@ -122,13 +122,155 @@
     <p>Связаться с нами: <a href="mailto:contact@sunbee.io" style="color: #fbee65;">contact@sunbee.io</a></p>
   </footer>
 
+  <!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SunBee — Защита от мошенничества</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #111;
+      color: #fbee65;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px;
+      background-color: #222;
+    }
+    header h1 {
+      font-size: 1.5rem;
+      margin: 0;
+    }
+    section {
+      min-height: 100vh;
+      padding: 60px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .hero {
+      background: linear-gradient(135deg, #111 0%, #222 100%);
+    }
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    .hero p {
+      font-size: 1.5rem;
+      color: #fff;
+    }
+    .btn {
+      margin-top: 30px;
+      padding: 15px 30px;
+      font-size: 1rem;
+      background-color: #fbee65;
+      color: #111;
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+    .search-section input {
+      width: 300px;
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+    .info {
+      max-width: 800px;
+      color: #ddd;
+      margin-top: 20px;
+    }
+    footer {
+      background: #222;
+      padding: 40px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Логотип и название сайта -->
+  <header>
+    <h1>SunBee</h1>
+  </header>
+
+  <!-- Слайд 1: Знакомство -->
+  <section class="hero">
+    <h1>SunBee</h1>
+    <p>Мы видим угрозы прежде, чем они видят вас.</p>
+    <button class="btn" onclick="scrollToSection('search')">Начать</button>
+  </section>
+
+  <!-- Слайд 2: Поиск -->
+  <section class="search-section" id="search">
+    <h2>Поиск новостей о мошенничестве</h2>
+    <input type="text" id="searchInput" placeholder="Введите ключевое слово (например: фишинг)">
+    <br>
+    <button class="btn" onclick="searchNews()">Проверить</button>
+    <div class="info" id="newsResults">
+      <h3>Здесь появятся результаты поиска...</h3>
+    </div>
+  </section>
+
+  <!-- Слайд 3: Виды мошенничества -->
+  <section>
+    <h2>Виды интернет-мошенничества</h2>
+    <div class="info">
+      <ul>
+        <li><strong>Фейковые магазины:</strong> сайты и аккаунты, предлагающие несуществующие товары.</li>
+        <li><strong>Фишинг:</strong> поддельные ссылки, крадущие ваши данные.</li>
+        <li><strong>Социальная инженерия:</strong> психологическое давление для получения доступа к информации.</li>
+        <li><strong>Поддельные отзывы:</strong> накрутка доверия к сомнительным аккаунтам.</li>
+        <li><strong>Мошенничество с оплатой:</strong> требование предоплаты без отправки товара.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Слайд 4: О нас и контакты -->
+  <footer>
+    <h2>О SunBee</h2>
+    <p>Наша миссия — создать безопасное цифровое пространство для всех. SunBee — это команда специалистов по кибербезопасности, аналитике и дизайну.</p>
+    <p>Связаться с нами: <a href="mailto:contact@sunbee.io" style="color: #fbee65;">contact@sunbee.io</a></p>
+  </footer>
+
+  <!-- Скрипт -->
   <script>
     function scrollToSection(id) {
       document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    }
+
+    async function searchNews() {
+      const query = document.getElementById('searchInput').value;
+      const apiKey = 'b2f1e3c81afb437f97f57a2fa844a802';
+      const response = await fetch(`https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&language=ru&pageSize=5&apiKey=${apiKey}`);
+      const data = await response.json();
+
+      const resultsDiv = document.getElementById('newsResults');
+      resultsDiv.innerHTML = '';
+
+      if (data.articles && data.articles.length > 0) {
+        data.articles.forEach(article => {
+          const item = document.createElement('div');
+          item.innerHTML = `
+            <p><strong>${article.title}</strong><br>
+            <em>${new Date(article.publishedAt).toLocaleDateString('ru-RU')}</em><br>
+            <a href="${article.url}" target="_blank" style="color: #fbee65;">Читать статью</a></p>
+            <hr>`;
+          resultsDiv.appendChild(item);
+        });
+      } else {
+        resultsDiv.innerHTML = '<p>Ничего не найдено по вашему запросу.</p>';
+      }
     }
   </script>
 
 </body>
 </html>
-
-
